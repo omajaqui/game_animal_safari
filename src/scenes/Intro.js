@@ -45,7 +45,7 @@ class Intro extends Phaser.Scene {
       });
 
       // Reproduce la música de fondo en bucle
-      this.backgroundMusic = this.sound.add('backgroundMusic', { volume: 0.2, loop: true });
+      this.backgroundMusic = this.sound.add('backgroundMusic', { volume: 0.4, loop: true });
 
       if (!this.backgroundMusic.isPlaying) {        
           // Detecta la interacción inicial del usuario
