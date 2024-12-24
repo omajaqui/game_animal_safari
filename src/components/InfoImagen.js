@@ -15,10 +15,7 @@ export default class InfoImagen {
     this.interactiveObjects = [];
   }  
 
-  show(paramImage, scenaValue) {
-    // Desactivar interacciones de la escena actual
-    this._disableSceneInput();
-
+  show(paramImage) {
     let nameImage = '';
     let word = '';
     let translate = '';
@@ -70,7 +67,7 @@ export default class InfoImagen {
       .setDepth(12)
       .setScale(0.25)      
       .setInteractive({ cursor: 'pointer' })
-      .on('pointerdown', () => this.closeInfo(scenaValue))
+      .on('pointerdown', () => this.closeInfo())
     ;
     this.buttonReplay = this.relatedScene.add.sprite(250, 50, 'btn_listen')
       .setDepth(12)
@@ -102,10 +99,7 @@ export default class InfoImagen {
   }
   
 
-  closeInfo(scenaValue) {
-    // Reanudar las interacciones de la escena actual
-    this._enableSceneInput();
-
+  closeInfo() {
     // Destruir elementos creados
     if (this.pauseOverlay) this.pauseOverlay.destroy();
     if (this.buttonContainer) this.buttonContainer.destroy();
@@ -120,27 +114,11 @@ export default class InfoImagen {
     if(this.relatedScene.scoreStiker >= this.relatedScene.scoreStikerLimit) {
       this.relatedScene.finished = 1;
     } else {
-      this.relatedScene.canRespawnStar = true;
       this.relatedScene.respawnStiker = 0;
-      this.relatedScene.soundTheme.play();
+      this.relatedScene.soundTheme.resume();
       if (this.relatedScene.playerSonund) {
-        this.relatedScene.playerSonund.play();
+        this.relatedScene.playerSonund.resume();
       }       
     }
-  }
-
-  // Desactivar todas las interacciones de los objetos de la escena
-  _disableSceneInput() {
-    this.interactiveObjects = this.relatedScene.children.list.filter(child => child.input && child.input.enabled);
-    this.interactiveObjects.forEach(child => (child.input.enabled = false));
-  }
-
-  // Rehabilitar las interacciones de los objetos de la escena
-  _enableSceneInput() {
-    if (this.interactiveObjects) {
-      this.interactiveObjects.forEach(child => {
-        if (child.input) child.input.enabled = true;
-      });
-    }
-  }
+  } 
 }

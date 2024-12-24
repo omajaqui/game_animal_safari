@@ -80,7 +80,6 @@ export default class GeneralInfo {
   }
 
   actualizarScore() {
-    this.starText.setText('X ' + this.relatedScene.scoreStar);
     this.stikerText.setText('X ' + this.relatedScene.scoreStiker);
   }
 }

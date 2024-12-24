@@ -1,7 +1,7 @@
 export default class StikerClass extends Phaser.Physics.Arcade.Group {
     constructor(physicsWorld, scene) {
       super(physicsWorld, scene);
-      this.scene = scene;
+      this.relateScene = scene;
 
       this.availableStickers = [];
       this.selectedStickers = [];
@@ -32,13 +32,25 @@ export default class StikerClass extends Phaser.Physics.Arcade.Group {
 
       // Determinar dirección aleatoria (true = izquierda, false = derecha)
       let desdeIzquierda = Phaser.Math.RND.pick([true, false]);
-      console.log('desde la izquierda;: ',desdeIzquierda);
-
+      desdeIzquierda = false;
+      let scale = 0.5;
+      let deep = 6;
       switch (stikerAleatorio) {
         case 'stiker_aguila':
         case 'stiker_urraca':
-          desdeIzquierda = false;
+          deep = 4;          
           heightAleatorio = Phaser.Math.RND.pick([100,200]);        
+          break;
+
+        case 'stiker_elefante':
+        case 'stiker_jirafa':
+          deep = 4;
+          scale = 1;
+          break;
+
+        case 'stiker_tigre':
+        case 'stiker_leon':
+          deep = 4;
           break;
       
         default:
@@ -53,10 +65,12 @@ export default class StikerClass extends Phaser.Physics.Arcade.Group {
         .setActive(true)
         .setVisible(true)
         .setCollideWorldBounds(false)
-        .setDepth(6)
-        .setScale(0.5)
+        .setDepth(deep)
+        .setScale(scale)
         .setBounce(1, 1)
         .setVelocityX(velocidadX)
+        .setInteractive()
+        .on('pointerdown', () => this.relateScene.handleClick(sticker))
       ;
         
       // Inicia la animación de latido

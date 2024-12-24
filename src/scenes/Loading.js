@@ -156,6 +156,17 @@ class Loading extends Phaser.Scene {
         this.load
           .audio('soundTheme', 'sonidos/soundTheme.mp3')
           .audio('soundMotor', 'sonidos/motor_effect.mp3')
+
+          .audio('translate_aguila', 'sonidos/translate_aguila.mp3')
+          .audio('translate_elefante', 'sonidos/translate_elefante.mp3')
+          .audio('translate_hipopotamo', 'sonidos/translate_hipopotamo.mp3')
+          .audio('translate_iguana', 'sonidos/translate_iguana.mp3')
+          .audio('translate_jirafa', 'sonidos/translate_jirafa.mp3')
+          .audio('translate_leon', 'sonidos/translate_leon.mp3')
+          .audio('translate_oso', 'sonidos/translate_oso.mp3')
+          .audio('translate_tigre', 'sonidos/translate_tigre.mp3')
+          .audio('translate_urraca', 'sonidos/translate_urraca.mp3')
+          .audio('translate_zebra', 'sonidos/translate_zebra.mp3')
         ;
       break;      
       

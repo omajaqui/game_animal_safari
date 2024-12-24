@@ -11,6 +11,7 @@ class ScenePpal extends Phaser.Scene {
   }
 
   init(){
+    this.canRespawnStiker = false;
     this.scoreStiker = 0;
     this.scoreStikerLimit = 5;
     this.respawnStiker = 0;
@@ -26,12 +27,12 @@ class ScenePpal extends Phaser.Scene {
   create(){   
     
     // PARALLAX
-    this.bgLayer1 = this.add.tileSprite(480, 270, 960, 540, 'parallaxLayer1').setDepth(1).setScrollFactor(0);
-    this.bgLayer2 = this.add.tileSprite(480, 270, 960, 540, 'parallaxLayer2').setDepth(2).setScrollFactor(0);
-    this.bgLayer3 = this.add.tileSprite(480, 270, 960, 540, 'parallaxLayer3').setDepth(3).setScrollFactor(0);
-    this.bgLayer4 = this.add.tileSprite(480, 270, 960, 540, 'parallaxLayer4').setDepth(4).setScrollFactor(0);
-    this.bgLayer5 = this.add.tileSprite(480, 270, 960, 540, 'parallaxLayer5').setDepth(5).setScrollFactor(0);
-    this.bgLayer6 = this.add.tileSprite(480, 270, 960, 540, 'parallaxLayer6').setDepth(8).setScrollFactor(0); 
+    this.bgLayer1 = this.add.tileSprite(480, 270, 960, 540, 'parallaxLayer1').setDepth(1).setScrollFactor(0); // sol
+    this.bgLayer2 = this.add.tileSprite(480, 270, 960, 540, 'parallaxLayer2').setDepth(2).setScrollFactor(0); // kilimanjaro
+    this.bgLayer3 = this.add.tileSprite(480, 270, 960, 540, 'parallaxLayer3').setDepth(3).setScrollFactor(0); // nubes
+    this.bgLayer4 = this.add.tileSprite(480, 270, 960, 540, 'parallaxLayer4').setDepth(4).setScrollFactor(0); // arboles lejanos
+    this.bgLayer5 = this.add.tileSprite(480, 270, 960, 540, 'parallaxLayer5').setDepth(5).setScrollFactor(0); // tierra y arboles cercanos
+    this.bgLayer6 = this.add.tileSprite(480, 270, 960, 540, 'parallaxLayer6').setDepth(8).setScrollFactor(0); // pasto
 
      // Crear un sprite para el cursor personalizado
      this.cursor = this.add.sprite(0, 0, 'lupa').setScale(0.2);
@@ -51,8 +52,8 @@ class ScenePpal extends Phaser.Scene {
     this.soundTheme.play();  
     
     //Sonido de motor carro
-    this.soundPlayer = this.sound.add('soundMotor', { volume: 0.5, loop: true });
-    this.soundPlayer.play();  
+    this.playerSonund = this.sound.add('soundMotor', { volume: 0.5, loop: true });
+    this.playerSonund.play();  
       
     // CREATE KEYBOARD CURSOS
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -64,7 +65,11 @@ class ScenePpal extends Phaser.Scene {
     // GROUPS
     this.stikerGroup = new StikerClass(this.physics.world, this);
 
-    this.generalInfo.create('lupa');     
+    this.generalInfo.create('lupa');
+    
+    setTimeout(() => {
+      this.canRespawnStiker = true;
+    }, 3000);
   }
 
   addStiker() {
@@ -103,7 +108,7 @@ class ScenePpal extends Phaser.Scene {
   //  STIKER RESPAWN CONTROL
   controlRespawnStikers(time) {
     if (time > this.respawnStiker) {
-      if (this.scoreStiker <= this.scoreStikerLimit) {
+      if (this.scoreStiker <= this.scoreStikerLimit && this.canRespawnStiker && !this.isPaused) {
         this.addStiker();
       }
       this.respawnStiker = time + this.respawnIntervalStiker;
@@ -113,7 +118,25 @@ class ScenePpal extends Phaser.Scene {
         sticker.destroy();
       }
     });
-  } 
+  }
+
+  handleClick(sprite) {
+    this.scoreStiker += 1;
+    const key = sprite.texture.key;
+    console.log(key);
+    sprite.setTint(0xff0000); // Cambiar el color como ejemplo
+    this.tweens.add({
+      targets: sprite,
+      scale: 0,
+      duration: 500,
+      ease: 'Power2',
+      onComplete: () => sprite.destroy(), // Eliminar el sprite después de la animación
+    });
+    this.isPaused = true;
+    this.generalInfo.actualizarScore();
+    this.soundTheme.pause();
+    this.infoImagen.show(key);
+  }
    
   update(time, delta){
     if(this.finished > 0){
