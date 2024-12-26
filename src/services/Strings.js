@@ -4,7 +4,7 @@ const wordsAndTranslations = [
   { name: 'iguana', translate: 'iguana', fixEspanish: '' },  
   { name: 'oso', translate: 'bear', fixEspanish: '' },
   { name: 'urraca', translate: 'magpie', fixEspanish: '' },
-  { name: 'hipopotamo', translate: 'hippo', fixEspanish: '' },
+  { name: 'hipopotamo', translate: 'hippo', fixEspanish: 'hipopótamo' },
   { name: 'jirafa', translate: 'giraffe', fixEspanish: '' },
   { name: 'leon', translate: 'lion', fixEspanish: 'león' },
   { name: 'tigre', translate: 'tiger', fixEspanish: '' },

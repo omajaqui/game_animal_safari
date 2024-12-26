@@ -167,6 +167,31 @@ class Loading extends Phaser.Scene {
           .audio('translate_tigre', 'sonidos/translate_tigre.mp3')
           .audio('translate_urraca', 'sonidos/translate_urraca.mp3')
           .audio('translate_zebra', 'sonidos/translate_zebra.mp3')
+          
+          .audio('animal_aguila', 'sonidos/aguila.mp3')
+          .audio('animal_elefante', 'sonidos/elefante.mp3')
+          .audio('animal_hipopotamo', 'sonidos/hipopotamo.mp3')
+          .audio('animal_iguana', 'sonidos/iguana.mp3')
+          .audio('animal_jirafa', 'sonidos/jirafa.mp3')
+          .audio('animal_leon', 'sonidos/leon.mp3')
+          .audio('animal_oso', 'sonidos/oso.mp3')
+          .audio('animal_tigre', 'sonidos/tigre.mp3')
+          .audio('animal_urraca', 'sonidos/urraca.mp3')
+          .audio('animal_zebra', 'sonidos/zebra.mp3')
+
+          .audio('encuentra_letra', 'sonidos/encuentraLetra.mp3')
+          .audio('bien_hecho', 'sonidos/bienHecho.mp3')
+          .audio('letra_a', 'sonidos/letraA.mp3')
+          .audio('letra_e', 'sonidos/letraE.mp3')
+          .audio('letra_i', 'sonidos/letraE.mp3')
+          .audio('letra_o', 'sonidos/letraO.mp3')
+          .audio('letra_u', 'sonidos/letraU.mp3')
+          .audio('letra_h', 'sonidos/letraH.mp3')
+          .audio('letra_j', 'sonidos/letraJ.mp3')
+          .audio('letra_l', 'sonidos/letraL.mp3')
+          .audio('letra_t', 'sonidos/letraT.mp3')
+          .audio('letra_z', 'sonidos/letraZ.mp3')
+          
         ;
       break;      
       

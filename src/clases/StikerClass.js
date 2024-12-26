@@ -24,7 +24,7 @@ export default class StikerClass extends Phaser.Physics.Arcade.Group {
     }
 
     newItem(tipo) {
-      console.log('nuevo stiker');
+      //console.log('nuevo stiker');
       this.defineStikers(tipo);
       const heightPosibles = [400];
       let heightAleatorio = Phaser.Math.RND.pick(heightPosibles);

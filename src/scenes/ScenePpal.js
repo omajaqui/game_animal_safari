@@ -34,17 +34,16 @@ class ScenePpal extends Phaser.Scene {
     this.bgLayer5 = this.add.tileSprite(480, 270, 960, 540, 'parallaxLayer5').setDepth(5).setScrollFactor(0); // tierra y arboles cercanos
     this.bgLayer6 = this.add.tileSprite(480, 270, 960, 540, 'parallaxLayer6').setDepth(8).setScrollFactor(0); // pasto
 
-     // Crear un sprite para el cursor personalizado
-     this.cursor = this.add.sprite(0, 0, 'lupa').setScale(0.2);
-     this.cursor.setDepth(100); // Asegurarte de que siempre esté encima de otros elementos
- 
-     // Ocultar el cursor del navegador
-     this.input.setDefaultCursor('none');
- 
-     // Actualizar la posición del cursor personalizado en cada frame
-     this.input.on('pointermove', (pointer) => {
-       this.cursor.setPosition(pointer.x, pointer.y);
-     });
+    // Crear un sprite para el cursor personalizado
+    this.cursor = this.add.sprite(0, 0, 'lupa').setScale(0.2);
+    this.cursor.setDepth(100); // Asegurarte de que siempre esté encima de otros elementos
+
+    this.showCustomCursor();
+
+    // Actualizar la posición del cursor personalizado en cada frame
+    this.input.on('pointermove', (pointer) => {
+      this.cursor.setPosition(pointer.x, pointer.y);
+    });
 
     
     //Sonido de fondo
@@ -52,7 +51,7 @@ class ScenePpal extends Phaser.Scene {
     this.soundTheme.play();  
     
     //Sonido de motor carro
-    this.playerSonund = this.sound.add('soundMotor', { volume: 0.5, loop: true });
+    this.playerSonund = this.sound.add('soundMotor', { volume: 0.3, loop: true });
     this.playerSonund.play();  
       
     // CREATE KEYBOARD CURSOS
@@ -110,8 +109,8 @@ class ScenePpal extends Phaser.Scene {
     if (time > this.respawnStiker) {
       if (this.scoreStiker <= this.scoreStikerLimit && this.canRespawnStiker && !this.isPaused) {
         this.addStiker();
+        this.respawnStiker = time + this.respawnIntervalStiker;
       }
-      this.respawnStiker = time + this.respawnIntervalStiker;
     }
     this.stikerGroup.getChildren().forEach(sticker => {
       if (sticker.x < -201 || sticker.x > 1161) {
@@ -123,7 +122,6 @@ class ScenePpal extends Phaser.Scene {
   handleClick(sprite) {
     this.scoreStiker += 1;
     const key = sprite.texture.key;
-    console.log(key);
     sprite.setTint(0xff0000); // Cambiar el color como ejemplo
     this.tweens.add({
       targets: sprite,
@@ -135,8 +133,22 @@ class ScenePpal extends Phaser.Scene {
     this.isPaused = true;
     this.generalInfo.actualizarScore();
     this.soundTheme.pause();
+    this.playerSonund.pause();
+    this.showDefaultCursor();
     this.infoImagen.show(key);
   }
+
+  // Función para mostrar el cursor predeterminado
+  showDefaultCursor () {
+    this.input.setDefaultCursor('default'); // Mostrar el cursor del navegador
+    this.cursor.setVisible(false); // Ocultar el cursor personalizado
+  }
+
+  // Función para mostrar el cursor personalizado
+  showCustomCursor () {
+    this.input.setDefaultCursor('none'); // Ocultar el cursor del navegador
+    this.cursor.setVisible(true); // Mostrar el cursor personalizado
+  };
    
   update(time, delta){
     if(this.finished > 0){

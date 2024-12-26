@@ -10,9 +10,6 @@ export default class InfoImagen {
     //variables game
     this.cw = 960;
     this.ch = 540;
-
-    // Lista de objetos interactivos
-    this.interactiveObjects = [];
   }  
 
   show(paramImage) {
@@ -21,9 +18,12 @@ export default class InfoImagen {
     let translate = '';
     let chunksWords = [];
     let keyAudiotranslate = '';
+    let keyAudioAnimal = '';
+    const posX = 230;
 
     nameImage = paramImage.replace('stiker','recurso');
     keyAudiotranslate = paramImage.replace('stiker','translate');
+    keyAudioAnimal = paramImage.replace('stiker','animal');
     chunksWords = paramImage.split('_');
     word = validateFix(chunksWords[1]);
     translate = getTranslate(chunksWords[1]);
@@ -34,8 +34,8 @@ export default class InfoImagen {
     this.pauseOverlay.fillRect(0, 0, this.relatedScene.cameras.main.width, this.relatedScene.cameras.main.height);
 
     this.image = this.relatedScene.add
-      .image(300, this.ch/2, nameImage)
-      .setScale(1.4)
+      .image(posX, this.ch/2, nameImage)
+      .setScale(0.4)
       .setDepth(12)
     ;
     // Crear un gráfico para la máscara redondeada
@@ -44,7 +44,7 @@ export default class InfoImagen {
     // Configurar el gráfico para dibujar un rectángulo redondeado
     this.maskGraphics.fillStyle(0xffffff, 1); // Color blanco (la máscara no necesita ser visible)
     this.maskGraphics.fillRoundedRect(
-      300 - (this.image.displayWidth / 2), // X (ajustado para centrar la imagen)
+      posX - (this.image.displayWidth / 2), // X (ajustado para centrar la imagen)
       this.ch / 2 - (this.image.displayHeight / 2), // Y (ajustado para centrar la imagen)
       this.image.displayWidth,  // Ancho de la imagen
       this.image.displayHeight, // Alto de la imagen
@@ -53,17 +53,26 @@ export default class InfoImagen {
     // Establecer la máscara en la imagen
     this.image.setMask(this.maskGraphics.createGeometryMask());
 
-    // Mostar Textos con nombre de imagen y traduccion
-    this.textWord = this.relatedScene.add.text(600, 100, word+'.', { font: '60px Arial', fill: '#ffffff' }).setDepth(12);
-    this.context = this.relatedScene.add.text(600, 180, 'En inglés se pronuncia', { font: '20px Arial', fill: '#ffffff' }).setDepth(12);
-    this.translate = this.relatedScene.add.text(600, 230, translate+'.', { font: '60px Arial', fill: '#ffffff' }).setDepth(12);
+    //Textos con nombre de imagen y traduccion (no visible inicialmente)
+    this.textWord = this.relatedScene.add.text(450, 50, 
+      word+' = '+translate,
+      { font: '60px Arial', fill: '#ffffff' }).setDepth(12)
+      .setVisible(false);
+    ;    
+    
+    this.createLetterContainer(chunksWords[1]);    
 
-    //reproducir audio
     this.audioTranslate = this.relatedScene.sound.add(keyAudiotranslate, { volume: 1, loop: false });
-    this.audioTranslate.play();
+    this.audioEncuentraLetra = this.relatedScene.sound.add('encuentra_letra', { volume: 1, loop: false });
+    this.audioAnimal = this.relatedScene.sound.add(keyAudioAnimal, { volume: 1, loop: false });
+    //reproducir audio
+    this.audioEncuentraLetra.play();
+    this.audioEncuentraLetra.once('complete', () => {
+      this.audioAnimal.play();      
+    });
     
     //botons
-    this.buttonClose = this.relatedScene.add.sprite(50, 50, 'btn_todobien')
+    this.buttonClose = this.relatedScene.add.sprite(150, 50, 'btn_todobien')
       .setDepth(12)
       .setScale(0.25)      
       .setInteractive({ cursor: 'pointer' })
@@ -78,31 +87,36 @@ export default class InfoImagen {
 
     // Crear un contenedor (no visible inicialmente)
     this.buttonContainer = this.relatedScene.add
-      .container(600, 350, [this.buttonClose ,this.buttonReplay])
+      .container(650, 430, [this.buttonClose ,this.buttonReplay])
       .setVisible(false)
       .setDepth(12)
-    ;
-
-    setTimeout(() => {
-      this.buttonContainer.setVisible(true);      
-    }, 3000);
-   
-   // Agregar botones a la lista de objetos interactivos
-   this.interactiveObjects.push(this.buttonClose, this.buttonReplay);     
+    ;          
   }
 
-  replayAudio() {
-    if (this.audioTranslate.isPlaying) {
-      this.audioTranslate.stop(); // Detiene el audio actual
+  replayAudio(audio = '') {
+    if (this.audioTranslate.isPlaying) { this.audioTranslate.stop(); }
+    //if (this.audioAnimal.isPlaying) { this.audioAnimal.stop(); }
+
+    switch (audio) {
+      case '':
+        this.audioTranslate.play();       
+        break;
+      
+      case 'animal':
+        this.audioAnimal.play();
+        break;
+    
+      default:
+        break;
     }
-    this.audioTranslate.play(); // Vuelve a reproducir el audio
-  }
-  
+  }  
 
   closeInfo() {
     // Destruir elementos creados
     if (this.pauseOverlay) this.pauseOverlay.destroy();
     if (this.buttonContainer) this.buttonContainer.destroy();
+    if (this.containerLetters) this.containerLetters.destroy();
+    if (this.buttonReplayAnimal) this.buttonReplayAnimal.destroy();
     if (this.image) this.image.destroy();
     if (this.maskGraphics) this.maskGraphics.destroy();
     if (this.textWord) this.textWord.destroy();
@@ -116,9 +130,109 @@ export default class InfoImagen {
     } else {
       this.relatedScene.respawnStiker = 0;
       this.relatedScene.soundTheme.resume();
+      this.relatedScene.showCustomCursor();
       if (this.relatedScene.playerSonund) {
         this.relatedScene.playerSonund.resume();
       }       
     }
-  } 
+  }
+
+  createLetterContainer(word) {
+    const letters = this.setLetters(word);
+    const indication = this.relatedScene.add.text
+      (0, 50, 'Encuentra la letra',
+        { font: '40px Arial', fill: '#ffffff' }
+      ).setDepth(13)
+    ;
+    const indication2 = this.relatedScene.add.text
+      (0, 100, 'con la que se escribe',
+        { font: '40px Arial', fill: '#ffffff' }
+      ).setDepth(13)
+    ;
+
+    //boton de reproduccion nombre animal
+    this.buttonReplayAnimal = this.relatedScene.add.sprite(430, 125, 'btn_listen')
+      .setDepth(13)
+      .setScale(0.2)      
+      .setInteractive({ cursor: 'pointer' })
+      .on('pointerdown', () => this.replayAudio('animal'))
+    ;
+
+    // Crear un contenedor para las letras
+    this.containerLetters = this.relatedScene.add.container(460, 50,[indication,indication2, this.buttonReplayAnimal]).setDepth(13);
+    let espacioEntreLetras = 100; // Espacio entre las letras
+
+    letters.forEach((letter, index) => {
+      if(letter == 'O') { espacioEntreLetras = 90; }
+      // Crear un texto interactivo para cada letra
+      const texto = this.relatedScene.add.text
+        (index * espacioEntreLetras, 200, letter,
+          { font: '80px Arial', fill: '#ffffff' }
+        )
+        .setDepth(13)
+        .setInteractive({ cursor: 'pointer' })
+      ;
+      // Agregar un evento al hacer clic en la letra
+      texto.on('pointerdown', () => {
+        this.letraClickeada(texto, word); // Pasar el objeto de texto a la función
+      });
+
+      // Agregar el texto al contenedor
+      this.containerLetters.add(texto);
+    });
+  }
+
+  letraClickeada(letra, word) {    
+    const firstLetter = word.charAt(0).toUpperCase();
+    if (letra._text !== firstLetter) {
+      letra.destroy();
+    } else {
+      const keyAudioLetra = `letra_${word.charAt(0)}`;
+      this.audioBienhecho = this.relatedScene.sound.add('bien_hecho', { volume: 1, loop: false });
+      this.audioLetra = this.relatedScene.sound.add(keyAudioLetra, { volume: 1, loop: false });
+      this.containerLetters.setVisible(false);
+      this.textWord.setVisible(true);      
+      this.audioBienhecho.play();
+
+      // Detectar cuando terminan las reproducciones
+      this.audioBienhecho.once('complete', () => {
+        this.audioLetra.play();
+        this.audioLetra.once('complete', () =>{
+          this.audioTranslate.play();
+          this.audioTranslate.once('complete', () =>{
+            this.buttonContainer.setVisible(true);
+          });
+        });
+      });
+    }
+  }
+
+  setLetters(animal) {
+    // Obtener la primera letra del animal
+    const firstLetter = animal.charAt(0).toUpperCase();
+    
+    // Definir las vocales y consonantes
+    const vowels = ['A', 'E', 'I', 'O', 'U'];
+    const consonants = 'BCDFGHJKLMNPQRSTVWXYZ'.split('');
+    
+    // Verificar si la primera letra es una vocal
+    if (vowels.includes(firstLetter)) {
+      return vowels; // Devuelve un array con las vocales
+    } else {
+      // Crear un array con 4 consonantes aleatorias
+      const consonantesAleatorias = [];
+      while (consonantesAleatorias.length < 4) {
+        const letra = consonants[Math.floor(Math.random() * consonants.length)];
+        if (!consonantesAleatorias.includes(letra) && letra !== firstLetter) {
+          consonantesAleatorias.push(letra);
+        }
+      }
+      
+      // Incluir la primera letra
+      consonantesAleatorias.push(firstLetter);
+      
+      // Mezclar las consonantes
+      return consonantesAleatorias.sort(() => Math.random() - 0.5);
+    }
+  }
 }
