@@ -95,11 +95,12 @@ class Loading extends Phaser.Scene {
           .image('bgLevels', `img/backgrounds/bg_levels.png?${_autoVersionPhaser}`)          
 
           //Niveles
-          .image('safari', `img/niveles/safari.png?${_autoVersionPhaser}`)
+          .image('safari_easy', `img/niveles/safari.png?${_autoVersionPhaser}`)
+          .image('safari_normal', `img/niveles/safari_normal.png?${_autoVersionPhaser}`)
+          .image('safari_hard', `img/niveles/safari_hard.png?${_autoVersionPhaser}`)
 
           //audios
-          //.audio('letraA', 'sonidos/scenaA/LetraA.mp3')
-          
+          .audio('sound_indications', 'sonidos/indications.mp3')          
 
           //bg par alas indicaciones de cada nivel
           .image('bg_ScenePpal_indications', `img/backgrounds/bg_ScenePpal_indications.png?${_autoVersionPhaser}`)
@@ -121,7 +122,9 @@ class Loading extends Phaser.Scene {
         this.load.image('parallaxLayer4', 'img/backgrounds/parallax_layer_4.png');
         this.load.image('parallaxLayer5', 'img/backgrounds/parallax_layer_5.png');
         this.load.image('parallaxLayer6', 'img/backgrounds/parallax_layer_6.png');
-        this.load.spritesheet('jeepSprite', 'img/player/jeep_spritesheet.png', { frameWidth: 256, frameHeight: 256 });        
+        this.load.spritesheet('jeepSprite_easy', `img/player/jeep_spritesheet.png?${_autoVersionPhaser}`, { frameWidth: 256, frameHeight: 256 });
+        this.load.spritesheet('jeepSprite_normal', `img/player/jeep_spritesheet_normal.png?${_autoVersionPhaser}`, { frameWidth: 256, frameHeight: 256 });
+        this.load.spritesheet('jeepSprite_hard', `img/player/jeep_spritesheet_hard.png?${_autoVersionPhaser}`, { frameWidth: 256, frameHeight: 256 });
 
         // Animales y objetos
         this.load

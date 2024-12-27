@@ -2,12 +2,14 @@ import PlayerJeep from "../clases/PlayerJeep.js?v=1.0";
 import StikerClass from "../clases/StikerClass.js?v=1.0";
 import GeneralInfo from "../components/GeneralInfo.js?v=1.0";
 import InfoImagen from "../components/InfoImagen.js?v=1.0";
+import Comun from "../services/Comun.js?v=1.0";
 
 class ScenePpal extends Phaser.Scene {
   constructor(){
     super('ScenePpal');
     this.generalInfo = new GeneralInfo(this);
     this.infoImagen = new InfoImagen(this);
+    this.comun = new Comun(this);    
   }
 
   init(){
@@ -18,14 +20,16 @@ class ScenePpal extends Phaser.Scene {
     this.respawnIntervalStiker = 30000;
     this.isPaused = false;    
     this.finished = 0;
+
+    this.config = this.comun.getDataLocalStorage('gameConfig');
+    console.log(this.config);
   }
 
   preload(){
     this.load.path = './assets/';    
   }
 
-  create(){   
-    
+  create(){    
     // PARALLAX
     this.bgLayer1 = this.add.tileSprite(480, 270, 960, 540, 'parallaxLayer1').setDepth(1).setScrollFactor(0); // sol
     this.bgLayer2 = this.add.tileSprite(480, 270, 960, 540, 'parallaxLayer2').setDepth(2).setScrollFactor(0); // kilimanjaro
@@ -58,7 +62,7 @@ class ScenePpal extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
 
     // PLAYER
-    this.player = new PlayerJeep(this, 1100, 380, 'jeepSprite');
+    this.player = new PlayerJeep(this, 1100, 380, this.config.spritePlayer);
     this.player.movePlayer();
 
     // GROUPS
@@ -136,6 +140,7 @@ class ScenePpal extends Phaser.Scene {
     this.playerSonund.pause();
     this.showDefaultCursor();
     this.infoImagen.show(key);
+    this.controlVisivilityStikers();
   }
 
   // Función para mostrar el cursor predeterminado
@@ -149,6 +154,10 @@ class ScenePpal extends Phaser.Scene {
     this.input.setDefaultCursor('none'); // Ocultar el cursor del navegador
     this.cursor.setVisible(true); // Mostrar el cursor personalizado
   };
+
+  controlVisivilityStikers() {
+    this.stikerGroup.setVisibility(!this.isPaused);
+  }
    
   update(time, delta){
     if(this.finished > 0){

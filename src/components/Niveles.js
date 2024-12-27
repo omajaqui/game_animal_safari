@@ -25,12 +25,16 @@ export default class Niveles {
       .setVisible(false);  // Lo mantenemos invisible hasta que queramos oscurecer
     
     //Definicion de botones
-    this.btnHome = this.relatedScene.add.sprite(40, 40, 'btn_home').setAlpha(0).setVisible(false);      
-
-    this.nivel_safari = this.relatedScene.add.sprite(200, 250, 'safari').setScale(0.8).setDepth(10).setInteractive({cursor:'pointer'});      
+    this.btnHome = this.relatedScene.add.sprite(40, 40, 'btn_home').setAlpha(0).setVisible(false);
+    this.nivel_safari_easy = this.relatedScene.add.sprite(200, 250, 'safari_easy').setScale(0.8).setDepth(10).setInteractive({cursor:'pointer'});
+    this.nivel_safari_normal = this.relatedScene.add.sprite(450, 250, 'safari_normal').setScale(0.8).setDepth(10).setInteractive({cursor:'pointer'});
+    this.nivel_safari_hard = this.relatedScene.add.sprite(700, 250, 'safari_hard').setScale(0.8).setDepth(10).setInteractive({cursor:'pointer'});
+    this.textLevel = this.relatedScene.add.text(0, 0, 'Selecciona un nivel',
+      { font: '40px Arial', fill: '#ffffff',stroke: '#000000', strokeThickness: 6 }
+    ).setOrigin(0.5).setPosition(this.cw/2, 50);
     
     this.containerNiveles = this.relatedScene.add.container(20, -500, 
-      [this.btnHome, this.nivel_safari]
+      [this.btnHome, this.nivel_safari_easy, this.nivel_safari_normal, this.nivel_safari_hard, this.textLevel]
     ).setDepth(10);
     
     // Intancias audios de niveles
@@ -99,27 +103,73 @@ export default class Niveles {
   interaccionNiveles(){
     //console.log("establecet interaccion con los btn de los niveles")
 
-    //INTERACION CON EL NIVEL SAFARI
-    this.nivel_safari.on('pointerover', () => {
+    //INTERACION CON EL NIVEL SAFARI EASY
+    this.nivel_safari_easy.on('pointerover', () => {
         this.relatedScene.tweens.add({
-            targets: this.nivel_safari,
+            targets: this.nivel_safari_easy,
             scaleX: 1,      // Nuevo valor de escala en X
             scaleY: 1,      // Nuevo valor de escala en Y
             duration: 200,    // Duración de la animación en milisegundos
             ease: 'Power1',   // Tipo de easing
         });
     });  
-    this.nivel_safari.on('pointerout', () => {
+    this.nivel_safari_easy.on('pointerout', () => {
         this.relatedScene.tweens.add({
-            targets: this.nivel_safari,
+            targets: this.nivel_safari_easy,
             scaleX: 0.8,      // Restaurar el valor original de escala en X
             scaleY: 0.8,      // Restaurar el valor original de escala en Y
             duration: 200,
             ease: 'Power1',
         });
     });
-    this.nivel_safari.on('pointerdown', () => {
-      this.startLevel('safari');
+    this.nivel_safari_easy.on('pointerdown', () => {
+      this.startLevel('easy');
+    });
+
+    //INTERACION CON EL NIVEL SAFARI NORMAL
+    this.nivel_safari_normal.on('pointerover', () => {
+      this.relatedScene.tweens.add({
+          targets: this.nivel_safari_normal,
+          scaleX: 1,      // Nuevo valor de escala en X
+          scaleY: 1,      // Nuevo valor de escala en Y
+          duration: 200,    // Duración de la animación en milisegundos
+          ease: 'Power1',   // Tipo de easing
+      });
+    });  
+    this.nivel_safari_normal.on('pointerout', () => {
+        this.relatedScene.tweens.add({
+            targets: this.nivel_safari_normal,
+            scaleX: 0.8,      // Restaurar el valor original de escala en X
+            scaleY: 0.8,      // Restaurar el valor original de escala en Y
+            duration: 200,
+            ease: 'Power1',
+        });
+    });
+    this.nivel_safari_normal.on('pointerdown', () => {
+      this.startLevel('normal');
+    });
+
+    //INTERACION CON EL NIVEL SAFARI HARD
+    this.nivel_safari_hard.on('pointerover', () => {
+      this.relatedScene.tweens.add({
+          targets: this.nivel_safari_hard,
+          scaleX: 1,      // Nuevo valor de escala en X
+          scaleY: 1,      // Nuevo valor de escala en Y
+          duration: 200,    // Duración de la animación en milisegundos
+          ease: 'Power1',   // Tipo de easing
+      });
+    });  
+    this.nivel_safari_hard.on('pointerout', () => {
+        this.relatedScene.tweens.add({
+            targets: this.nivel_safari_hard,
+            scaleX: 0.8,      // Restaurar el valor original de escala en X
+            scaleY: 0.8,      // Restaurar el valor original de escala en Y
+            duration: 200,
+            ease: 'Power1',
+        });
+    });
+    this.nivel_safari_hard.on('pointerdown', () => {
+      this.startLevel('hard');
     });
 
     //INTERACION CON EL BOTON HOME        
@@ -133,27 +183,79 @@ export default class Niveles {
     });        
   } 
 
-  async startLevel(currentKey) {
+  async startLevel(level) {
     this.sceneToLoad = '';
 
+    // Configuración para el nivel fácil
+    const config = {
+      difficulty: level,
+      spritePlayer: `jeepSprite_${level}`,
+    };
+    localStorage.setItem('gameConfig', JSON.stringify(config));
+
     // Ocultar todos los niveles, estrellas y el boton de home
-    this.nivel_safari.setAlpha(0);
+    this.nivel_safari_easy.setAlpha(0);
     this.btnHome.setAlpha(0);
+    this.textLevel.setAlpha(0);
 
     // Eliminar los eventos previos de interacción => a todos los niveles
-    this.nivel_safari.removeAllListeners('pointerover');
-    this.nivel_safari.removeAllListeners('pointerout');
-    this.nivel_safari.removeAllListeners('pointerdown');
+    this.nivel_safari_easy.removeAllListeners('pointerover');
+    this.nivel_safari_easy.removeAllListeners('pointerout');
+    this.nivel_safari_easy.removeAllListeners('pointerdown');
+
+    this.nivel_safari_normal.removeAllListeners('pointerover');
+    this.nivel_safari_normal.removeAllListeners('pointerout');
+    this.nivel_safari_normal.removeAllListeners('pointerdown');
+
+    this.nivel_safari_hard.removeAllListeners('pointerover');
+    this.nivel_safari_hard.removeAllListeners('pointerout');
+    this.nivel_safari_hard.removeAllListeners('pointerdown');
 
     // Dejar visible solo el nivel seleccionado
-    switch (currentKey) {
-      case 'safari':
+    switch (level) {
+      case 'easy':
         this.sceneToLoad = 'ScenePpal';
-        this.nivel_safari.setAlpha(1);
+        this.nivel_safari_easy.setAlpha(1);        
 
         //Crear animación para agrandar y centrar el nivel seleccionado
         this.relatedScene.tweens.add({
-          targets: this.nivel_safari,             // Usa el nivel seleccionado
+          targets: this.nivel_safari_easy,             // Usa el nivel seleccionado
+          scale: 1.2,                             // Agrandar el nivel seleccionado
+          x: this.cw / 2,                         // Llevar al centro de la pantalla
+          y: this.ch / 2,                         // Llevar al centro vertical
+          duration: 1000,                         // Duración de la animación en ms
+          ease: 'Power2',                         // Tipo de suavizado      
+          onComplete: async () => {
+            await this.controlContinue();
+          }
+        });
+        break;
+      
+      case 'normal':
+        this.sceneToLoad = 'ScenePpal';
+        this.nivel_safari_normal.setAlpha(1);        
+
+        //Crear animación para agrandar y centrar el nivel seleccionado
+        this.relatedScene.tweens.add({
+          targets: this.nivel_safari_normal,             // Usa el nivel seleccionado
+          scale: 1.2,                             // Agrandar el nivel seleccionado
+          x: this.cw / 2,                         // Llevar al centro de la pantalla
+          y: this.ch / 2,                         // Llevar al centro vertical
+          duration: 1000,                         // Duración de la animación en ms
+          ease: 'Power2',                         // Tipo de suavizado      
+          onComplete: async () => {
+            await this.controlContinue();
+          }
+        });
+        break;
+
+      case 'hard':
+        this.sceneToLoad = 'ScenePpal';
+        this.nivel_safari_hard.setAlpha(1);        
+
+        //Crear animación para agrandar y centrar el nivel seleccionado
+        this.relatedScene.tweens.add({
+          targets: this.nivel_safari_hard,             // Usa el nivel seleccionado
           scale: 1.2,                             // Agrandar el nivel seleccionado
           x: this.cw / 2,                         // Llevar al centro de la pantalla
           y: this.ch / 2,                         // Llevar al centro vertical
@@ -174,7 +276,8 @@ export default class Niveles {
   async controlContinue() {
     if (this.relatedScene.backgroundMusic && this.relatedScene.backgroundMusic.isPlaying) {
       this.relatedScene.backgroundMusic.stop();
-    }
+    }   
+
     await this.comun.delay(1000);
     this.showIndications();
     setTimeout(() => {
@@ -186,7 +289,10 @@ export default class Niveles {
     const keyBgIndications = `bg_${this.sceneToLoad}_indications`;
     this.bgLevels.setAlpha(0);
     this.overlay.setAlpha(0);
-    this.bgIndications = this.relatedScene.add.image(this.cw/2, this.ch/2, keyBgIndications).setDepth(10);
+    this.bgIndications = this.relatedScene.add.image(this.cw/2, this.ch/2, keyBgIndications).setDepth(10); 
+
+    const soundIndications = this.relatedScene.sound.add('sound_indications', { volume: 1, loop: false });
+    soundIndications.play();
 
     // Agregar un texto para el contador regresivo en la esquina inferior derecha
     const countdownText = this.relatedScene.add.text(

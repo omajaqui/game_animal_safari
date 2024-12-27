@@ -9,4 +9,12 @@ export default class Comun {
       }, time);
     });
   }
+
+  getDataLocalStorage(key) {
+    const data = localStorage.getItem(key);
+    if (data) {
+        return JSON.parse(data);
+    }
+    return null; // Retorna null si no hay datos guardados
+  }
 }

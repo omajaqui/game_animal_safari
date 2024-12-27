@@ -23,7 +23,7 @@ export default class PlayerJeep extends Phaser.Physics.Arcade.Sprite {
     // Animación hacia la derecha (fotogramas 0 a 5)
     this.anims.create({
       key: 'turn',
-      frames: this.anims.generateFrameNumbers('jeepSprite', { start: 0, end: 5 }),
+      frames: this.anims.generateFrameNumbers(this.scene.config.spritePlayer, { start: 0, end: 5 }),
       frameRate: 20,
       repeat: -1
     });
