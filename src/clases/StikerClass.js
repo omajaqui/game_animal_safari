@@ -42,6 +42,10 @@ export default class StikerClass extends Phaser.Physics.Arcade.Group {
     switch (stikerAleatorio) {
       case 'stiker_aguila':
       case 'stiker_urraca':
+      case 'stiker_mariposa':
+      case 'stiker_colibri':
+      case 'stiker_buho':
+      case 'stiker_murcielago':
         deep = 4;          
         heightAleatorio = Phaser.Math.RND.pick([100,200]);
         velocidadX = -80;
@@ -58,8 +62,7 @@ export default class StikerClass extends Phaser.Physics.Arcade.Group {
       case 'stiker_leon':
         deep = 4;
         velocidadX = -60;
-        break;
-    
+        break;    
       default:
         break;
     }     
@@ -97,20 +100,54 @@ export default class StikerClass extends Phaser.Physics.Arcade.Group {
   defineStikers(tipo) {
     let stikers = [];
     switch (tipo) {
-      case 'safari':
+      case 'easy':
+        stikers = [
+          'stiker_buho',
+          'stiker_cerdo',
+          'stiker_gato',
+          'stiker_hormiga',
+          'stiker_murcielago',
+          'stiker_rata',
+          'stiker_perro',
+          'stiker_zorro',
+        ];
+      break;
+
+      case 'normal':
         stikers = [
           'stiker_aguila',
-          'stiker_elefante',
+          'stiker_caballo',
           'stiker_hipopotamo',
           'stiker_iguana',
-          'stiker_jirafa',
           'stiker_leon',
+          'stiker_mono',
+          'stiker_rana',
           'stiker_oso',
           'stiker_tigre',
-          'stiker_urraca',
           'stiker_zebra',
         ];
-      break;      
+      break;
+
+      case 'hard':
+        stikers = [
+          'stiker_araña',
+          'stiker_ardilla',
+          'stiker_armadillo',
+          'stiker_caiman',
+          'stiker_canguro',
+          'stiker_colibri',
+          'stiker_cucaracha',
+          'stiker_elefante',
+          'stiker_escorpion',
+          'stiker_jirafa',
+          'stiker_mariposa',
+          'stiker_mariquita',
+          'stiker_puercoespin',
+          'stiker_saltamontes',
+          'stiker_serpiente',
+          'stiker_urraca',
+        ];
+      break; 
     
       default:
         break;

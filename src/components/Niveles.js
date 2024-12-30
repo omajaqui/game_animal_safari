@@ -176,8 +176,8 @@ export default class Niveles {
     this.btnHome.on('pointerover', () => { this.btnHome.setScale(0.35); });
     this.btnHome.on('pointerout', () => {  this.btnHome.setScale(0.25); });
     this.btnHome.on('pointerdown', () => {
-      if (this.relatedScene.backgroundMusic && this.relatedScene.backgroundMusic.isPlaying) {
-        this.relatedScene.backgroundMusic.stop();
+      if (this.relatedScene.soundTheme && this.relatedScene.soundTheme.isPlaying) {
+        this.relatedScene.soundTheme.stop();
       }
       this.relatedScene.scene.start('Intro'); 
     });        
@@ -186,7 +186,7 @@ export default class Niveles {
   async startLevel(level) {
     this.sceneToLoad = '';
 
-    // Configuración para el nivel fácil
+    // Configuración para el nivel
     const config = {
       difficulty: level,
       spritePlayer: `jeepSprite_${level}`,
@@ -195,6 +195,8 @@ export default class Niveles {
 
     // Ocultar todos los niveles, estrellas y el boton de home
     this.nivel_safari_easy.setAlpha(0);
+    this.nivel_safari_normal.setAlpha(0);
+    this.nivel_safari_hard.setAlpha(0);
     this.btnHome.setAlpha(0);
     this.textLevel.setAlpha(0);
 
@@ -274,8 +276,8 @@ export default class Niveles {
   }
 
   async controlContinue() {
-    if (this.relatedScene.backgroundMusic && this.relatedScene.backgroundMusic.isPlaying) {
-      this.relatedScene.backgroundMusic.stop();
+    if (this.relatedScene.soundTheme && this.relatedScene.soundTheme.isPlaying) {
+      this.relatedScene.soundTheme.stop();
     }   
 
     await this.comun.delay(1000);

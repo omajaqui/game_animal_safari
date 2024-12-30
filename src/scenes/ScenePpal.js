@@ -20,9 +20,16 @@ class ScenePpal extends Phaser.Scene {
     this.respawnIntervalStiker = 30000;
     this.isPaused = false;    
     this.finished = 0;
+    this.colectionActual = this.comun.getDataLocalStorage('collection');
 
     this.config = this.comun.getDataLocalStorage('gameConfig');
-    console.log(this.config);
+    switch (this.config.difficulty) {
+      case 'easy': this.scoreStikerLimit = 4; break;
+      case 'normal': this.scoreStikerLimit = 5; break;
+      case 'hard': this.scoreStikerLimit = 8; break;    
+      default:
+        break;
+    }
   }
 
   preload(){
@@ -76,7 +83,7 @@ class ScenePpal extends Phaser.Scene {
   }
 
   addStiker() {
-    this.stikerGroup.newItem('safari');    
+    this.stikerGroup.newItem(this.config.difficulty);    
   }
 
   controlParallax() {
@@ -157,6 +164,20 @@ class ScenePpal extends Phaser.Scene {
 
   controlVisivilityStikers() {
     this.stikerGroup.setVisibility(!this.isPaused);
+  }
+
+  checkCollection(name) {
+    let updated = false;
+    for (let i = 0; i < this.colectionActual.length; i++) {
+      if
+      (this.colectionActual[i].name === name && !this.colectionActual[i].visible) {
+        this.colectionActual[i].visible = true;
+        updated = true;
+      }
+    }
+    if (updated) {
+      this.comun.createColeccion(this.colectionActual);
+    }
   }
    
   update(time, delta){

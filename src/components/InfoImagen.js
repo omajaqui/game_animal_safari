@@ -12,7 +12,7 @@ export default class InfoImagen {
     this.ch = 540;
   }  
 
-  show(paramImage) {
+  show(paramImage, origen='') {
     let nameImage = '';
     let word = '';
     let translate = '';
@@ -58,18 +58,21 @@ export default class InfoImagen {
       word+' = '+translate,
       { font: '60px Arial', fill: '#ffffff' }).setDepth(12)
       .setVisible(false).setOrigin(0.5).setPosition(this.cw/2, 40);
-    ;    
+    ;
     
-    this.createLetterContainer(chunksWords[1]);    
+    if (origen == '') {
+      this.createLetterContainer(chunksWords[1]);
+      this.audioEncuentraLetra = this.relatedScene.sound.add('encuentra_letra', { volume: 1, loop: false });
+      this.audioAnimal = this.relatedScene.sound.add(keyAudioAnimal, { volume: 1, loop: false });
+      //reproducir audio
+      this.audioEncuentraLetra.play();
+      this.audioEncuentraLetra.once('complete', () => {
+        this.audioAnimal.play();      
+      });
+    }
+    
 
     this.audioTranslate = this.relatedScene.sound.add(keyAudiotranslate, { volume: 1, loop: false });
-    this.audioEncuentraLetra = this.relatedScene.sound.add('encuentra_letra', { volume: 1, loop: false });
-    this.audioAnimal = this.relatedScene.sound.add(keyAudioAnimal, { volume: 1, loop: false });
-    //reproducir audio
-    this.audioEncuentraLetra.play();
-    this.audioEncuentraLetra.once('complete', () => {
-      this.audioAnimal.play();      
-    });
     
     //botons
     this.buttonClose = this.relatedScene.add.sprite(150, 50, 'btn_todobien')
@@ -90,7 +93,19 @@ export default class InfoImagen {
       .container(650, 430, [this.buttonClose ,this.buttonReplay])
       .setVisible(false)
       .setDepth(12)
-    ;          
+    ;
+
+    if (origen == 'collection') {
+      this.textWord.setVisible(true);
+      // Crear un contenedor para las felicitaciones
+      this.congratContainer = this.relatedScene.add.container(690, 280).setVisible(false).setDepth(13);
+      this.showContainerCongrat();
+
+      this.audioTranslate.play();
+      this.audioTranslate.once('complete', () =>{
+        this.buttonContainer.setVisible(true);
+      });
+    }
   }
 
   replayAudio(audio = '') {
@@ -212,7 +227,11 @@ export default class InfoImagen {
           this.audioTranslate.play();
           this.audioTranslate.once('complete', () =>{
             this.buttonContainer.setVisible(true);
-          });          
+          });
+          
+          // marcar el stiker en la coleccion como visible
+          const name_collection = `stiker_${word}`;
+          this.relatedScene.checkCollection(name_collection);
         }, 1500);
       });
     }

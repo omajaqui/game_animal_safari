@@ -1,14 +1,48 @@
 const wordsAndTranslations = [
+
+  // nivel facil
+  { name: 'hormiga', translate: 'ant', fixEspanish: '' },
+  { name: 'murcielago', translate: 'bat', fixEspanish: 'murciélago' },
+  { name: 'gato', translate: 'cat', fixEspanish: '' },
+  { name: 'perro', translate: 'dog', fixEspanish: '' },
+  { name: 'buho', translate: 'owl', fixEspanish: 'búho' },
+  { name: 'cerdo', translate: 'pig', fixEspanish: '' },
+  { name: 'rata', translate: 'rat', fixEspanish: '' },
+  { name: 'zorro', translate: 'fox', fixEspanish: '' },
+
+  //nivel normal
   { name: 'aguila', translate: 'eagle', fixEspanish: 'águila' },
-  { name: 'elefante', translate: 'elephant', fixEspanish: '' },
+  { name: 'rana', translate: 'frog', fixEspanish: '' },
+  { name: 'caballo', translate: 'horse', fixEspanish: '' },
+  { name: 'mono', translate: 'monkey', fixEspanish: '' },
+  { name: 'tigre', translate: 'tiger', fixEspanish: '' },
+  { name: 'leon', translate: 'lion', fixEspanish: 'león' },
+  { name: 'hipopotamo', translate: 'hippo', fixEspanish: 'hipopótamo' },
   { name: 'iguana', translate: 'iguana', fixEspanish: '' },  
   { name: 'oso', translate: 'bear', fixEspanish: '' },
-  { name: 'urraca', translate: 'magpie', fixEspanish: '' },
-  { name: 'hipopotamo', translate: 'hippo', fixEspanish: 'hipopótamo' },
-  { name: 'jirafa', translate: 'giraffe', fixEspanish: '' },
-  { name: 'leon', translate: 'lion', fixEspanish: 'león' },
-  { name: 'tigre', translate: 'tiger', fixEspanish: '' },
   { name: 'zebra', translate: 'zebra', fixEspanish: '' },
+
+
+  //nivel dificil
+  { name: 'caiman', translate: 'alligator', fixEspanish: 'caimán' },
+  { name: 'armadillo', translate: 'armadillo', fixEspanish: '' },
+  { name: 'elefante', translate: 'elephant', fixEspanish: '' },
+  { name: 'urraca', translate: 'magpie', fixEspanish: '' },  
+  { name: 'jirafa', translate: 'giraffe', fixEspanish: '' },
+  { name: 'mariposa', translate: 'butterfly', fixEspanish: '' },
+  { name: 'cucaracha', translate: 'cockroach', fixEspanish: '' },
+  { name: 'canguro', translate: 'Kangaroo', fixEspanish: '' },
+  { name: 'puercoespin', translate: 'Porcupine', fixEspanish: 'puercoespín' },
+  { name: 'serpiente', translate: 'snake', fixEspanish: '' },
+  { name: 'escorpion', translate: 'scorpion', fixEspanish: 'escorpión' },
+  { name: 'ardilla', translate: 'Squirrel', fixEspanish: '' },
+  { name: 'araña', translate: 'spider', fixEspanish: '' },
+  { name: 'mariquita', translate: 'ladybug', fixEspanish: '' },
+  { name: 'saltamontes', translate: 'Grasshopper', fixEspanish: '' },
+  { name: 'colibri', translate: 'Hummingbird', fixEspanish: 'colibrí' },
+  
+
+
 ];
 
 export function removeAccents(str) {

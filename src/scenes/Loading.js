@@ -1,15 +1,18 @@
 import Niveles from "./../components/Niveles.js?v1.0";
+import Comun from "../services/Comun.js?v=1.0";
 
 class Loading extends Phaser.Scene {
   constructor() {
     super('Loading');
     this.targetScene = null; // Escena objetivo
     this.niveles = new Niveles(this);
+    this.comun = new Comun(this);   
   }
 
   init(data) {
     // Recibe el nombre de la escena a cargar desde los datos pasados al iniciar la escena
     this.targetScene = data.sceneToLoad || 'Intro'; // Valor predeterminado si no se proporciona una escena
+    this.config = this.comun.getDataLocalStorage('gameConfig');
   }
 
   preload() {
@@ -86,9 +89,139 @@ class Loading extends Phaser.Scene {
       .audio('winner', 'sonidos/winner.mp3')
     ;
 
+    // cargar todos los stiker para que esten disponibles para la coleccion
+    //stikers
+    this.load
+      .image('stiker_buho', 'img/niveles/safari/stiker_buho.png')
+      .image('stiker_cerdo', 'img/niveles/safari/stiker_cerdo.png')
+      .image('stiker_gato', 'img/niveles/safari/stiker_gato.png')
+      .image('stiker_hormiga', 'img/niveles/safari/stiker_hormiga.png')
+      .image('stiker_murcielago', 'img/niveles/safari/stiker_murcielago.png')
+      .image('stiker_rata', 'img/niveles/safari/stiker_rata.png')
+      .image('stiker_perro','img/niveles/safari/stiker_perro.png')
+      .image('stiker_zorro', 'img/niveles/safari/stiker_zorro.png')
+
+      .image('stiker_aguila', 'img/niveles/safari/stiker_aguila.png')
+      .image('stiker_caballo', 'img/niveles/safari/stiker_caballo.png')
+      .image('stiker_hipopotamo', 'img/niveles/safari/stiker_hipopotamo.png')
+      .image('stiker_iguana', 'img/niveles/safari/stiker_iguana.png')
+      .image('stiker_leon', 'img/niveles/safari/stiker_leon.png')
+      .image('stiker_mono', 'img/niveles/safari/stiker_mono.png')
+      .image('stiker_rana', 'img/niveles/safari/stiker_rana.png')
+      .image('stiker_oso', 'img/niveles/safari/stiker_oso.png')
+      .image('stiker_tigre', 'img/niveles/safari/stiker_tigre.png')
+      .image('stiker_zebra', 'img/niveles/safari/stiker_zebra.png')
+
+      .image('stiker_araña', 'img/niveles/safari/stiker_araña.png')
+      .image('stiker_ardilla', 'img/niveles/safari/stiker_ardilla.png')
+      .image('stiker_armadillo', 'img/niveles/safari/stiker_armadillo.png')
+      .image('stiker_caiman', 'img/niveles/safari/stiker_caiman.png')
+      .image('stiker_canguro', 'img/niveles/safari/stiker_canguro.png')
+      .image('stiker_colibri', 'img/niveles/safari/stiker_colibri.png')
+      .image('stiker_cucaracha', 'img/niveles/safari/stiker_cucaracha.png')
+      .image('stiker_elefante', 'img/niveles/safari/stiker_elefante.png')
+      .image('stiker_escorpion', 'img/niveles/safari/stiker_escorpion.png')
+      .image('stiker_jirafa', 'img/niveles/safari/stiker_jirafa.png')
+      .image('stiker_mariposa', 'img/niveles/safari/stiker_mariposa.png')
+      .image('stiker_mariquita', 'img/niveles/safari/stiker_mariquita.png')
+      .image('stiker_puercoespin', 'img/niveles/safari/stiker_puercoespin.png')
+      .image('stiker_saltamontes','img/niveles/safari/stiker_saltamontes.png')
+      .image('stiker_serpiente', 'img/niveles/safari/stiker_serpiente.png')
+      .image('stiker_urraca', 'img/niveles/safari/stiker_urraca.png')
+    ;
+
+    // cargar todos los recursos de imagens para que esten disponibles para la coleccion
+    this.load
+      .image('recurso_buho', 'img/niveles/safari/buho.png')
+      .image('recurso_cerdo', 'img/niveles/safari/cerdo.png')
+      .image('recurso_gato', 'img/niveles/safari/gato.png')
+      .image('recurso_hormiga', 'img/niveles/safari/hormiga.png')
+      .image('recurso_murcielago', 'img/niveles/safari/murcielago.png')
+      .image('recurso_rata', 'img/niveles/safari/rata.png')
+      .image('recurso_perro','img/niveles/safari/perro.png')
+      .image('recurso_zorro', 'img/niveles/safari/zorro.png')
+
+      .image('recurso_aguila', 'img/niveles/safari/aguila.png')
+      .image('recurso_caballo', 'img/niveles/safari/caballo.png')
+      .image('recurso_hipopotamo', 'img/niveles/safari/hipopotamo.png')
+      .image('recurso_iguana', 'img/niveles/safari/iguana.png')
+      .image('recurso_leon', 'img/niveles/safari/leon.png')
+      .image('recurso_mono', 'img/niveles/safari/mono.png')
+      .image('recurso_rana', 'img/niveles/safari/rana.png')
+      .image('recurso_oso', 'img/niveles/safari/oso.png')
+      .image('recurso_tigre', 'img/niveles/safari/tigre.png')
+      .image('recurso_zebra', 'img/niveles/safari/zebra.png')
+
+      .image('recurso_araña', 'img/niveles/safari/araña.png')
+      .image('recurso_ardilla', 'img/niveles/safari/ardilla.png')
+      .image('recurso_armadillo', 'img/niveles/safari/armadillo.png')
+      .image('recurso_caiman', 'img/niveles/safari/caiman.png')
+      .image('recurso_canguro', 'img/niveles/safari/canguro.png')
+      .image('recurso_colibri', 'img/niveles/safari/colibri.png')
+      .image('recurso_cucaracha', 'img/niveles/safari/cucaracha.png')
+      .image('recurso_elefante', 'img/niveles/safari/elefante.png')
+      .image('recurso_escorpion', 'img/niveles/safari/escorpion.png')
+      .image('recurso_jirafa', 'img/niveles/safari/jirafa.png')
+      .image('recurso_mariposa', 'img/niveles/safari/mariposa.png')
+      .image('recurso_mariquita', 'img/niveles/safari/mariquita.png')
+      .image('recurso_puercoespin', 'img/niveles/safari/puercoespin.png')
+      .image('recurso_saltamontes','img/niveles/safari/saltamontes.png')
+      .image('recurso_serpiente', 'img/niveles/safari/serpiente.png')
+      .image('recurso_urraca', 'img/niveles/safari/urraca.png')
+    ;
+
+    // cargar todos los translates para que esten disponibles para la collection
+    this.load
+      .audio('translate_buho', 'sonidos/translate_buho.mp3')
+      .audio('translate_cerdo', 'sonidos/translate_cerdo.mp3')
+      .audio('translate_gato', 'sonidos/translate_gato.mp3')
+      .audio('translate_hormiga', 'sonidos/translate_hormiga.mp3')
+      .audio('translate_murcielago', 'sonidos/translate_murcielago.mp3')
+      .audio('translate_rata', 'sonidos/translate_rata.mp3')
+      .audio('translate_perro','sonidos/translate_perro.mp3')
+      .audio('translate_zorro', 'sonidos/translate_zorro.mp3')
+
+      .audio('translate_aguila', 'sonidos/translate_aguila.mp3')
+      .audio('translate_caballo', 'sonidos/translate_caballo.mp3')
+      .audio('translate_hipopotamo', 'sonidos/translate_hipopotamo.mp3')
+      .audio('translate_iguana', 'sonidos/translate_iguana.mp3')
+      .audio('translate_leon', 'sonidos/translate_leon.mp3')
+      .audio('translate_mono', 'sonidos/translate_mono.mp3')
+      .audio('translate_rana', 'sonidos/translate_rana.mp3')
+      .audio('translate_oso', 'sonidos/translate_oso.mp3')
+      .audio('translate_tigre', 'sonidos/translate_tigre.mp3')
+      .audio('translate_zebra', 'sonidos/translate_zebra.mp3')
+
+      .audio('translate_araña', 'sonidos/translate_araña.mp3')
+      .audio('translate_ardilla', 'sonidos/translate_ardilla.mp3')
+      .audio('translate_armadillo', 'sonidos/translate_armadillo.mp3')
+      .audio('translate_caiman', 'sonidos/translate_caiman.mp3')
+      .audio('translate_canguro', 'sonidos/translate_canguro.mp3')
+      .audio('translate_colibri', 'sonidos/translate_colibri.mp3')
+      .audio('translate_cucaracha', 'sonidos/translate_cucaracha.mp3')
+      .audio('translate_elefante', 'sonidos/translate_elefante.mp3')
+      .audio('translate_escorpion', 'sonidos/translate_escorpion.mp3')
+      .audio('translate_jirafa', 'sonidos/translate_jirafa.mp3')
+      .audio('translate_mariposa', 'sonidos/translate_mariposa.mp3')
+      .audio('translate_mariquita', 'sonidos/translate_mariquita.mp3')
+      .audio('translate_puercoespin', 'sonidos/translate_puercoespin.mp3')
+      .audio('translate_saltamontes','sonidos/translate_saltamontes.mp3')
+      .audio('translate_serpiente', 'sonidos/translate_serpiente.mp3')
+      .audio('translate_urraca', 'sonidos/translate_urraca.mp3')
+    ;
+
     switch (this.targetScene) {
       case 'Intro':
-        //this.niveles.preload();
+        //recursos para el menu
+        this.load
+          .image('menu_context', `img/menu/menu.png?${_autoVersionPhaser}`)
+          .image('btn_jugar', `img/menu/btn_jugar.png?${_autoVersionPhaser}`)
+          .image('btn_coleccion', `img/menu/btn_coleccion.png?${_autoVersionPhaser}`)
+          .image('btn_reiniciar', `img/menu/btn_reiniciar.png?${_autoVersionPhaser}`)
+          .image('btn_close', `img/menu/btn_close.png?${_autoVersionPhaser}`)
+          .image('btn_prev', `img/menu/btn_prev.png?${_autoVersionPhaser}`)
+          .image('btn_next', `img/menu/btn_next.png?${_autoVersionPhaser}`)
+        ;
         
         //recursos del componente niveles
         this.load
@@ -111,10 +244,13 @@ class Loading extends Phaser.Scene {
           .image('bgOverlay',`img/backgrounds/overlay_black.png?${_autoVersionPhaser}`)
           .image('btn_music',`img/icons/music_on.png?${_autoVersionPhaser}`)
         ;                
-        this.load.audio('backgroundMusic', 'sonidos/bg_Intro.mp3');
+        this.load.audio('backgroundMusic', 'sonidos/bg_Intro.mp3');       
       break;
 
       case 'ScenePpal':
+        //definir el nivel seleccionado
+        const level = this.config.difficulty;
+
         // parallax y player
         this.load.image('parallaxLayer1', 'img/backgrounds/parallax_layer_1.png');
         this.load.image('parallaxLayer2', 'img/backgrounds/parallax_layer_2.png');
@@ -122,65 +258,12 @@ class Loading extends Phaser.Scene {
         this.load.image('parallaxLayer4', 'img/backgrounds/parallax_layer_4.png');
         this.load.image('parallaxLayer5', 'img/backgrounds/parallax_layer_5.png');
         this.load.image('parallaxLayer6', 'img/backgrounds/parallax_layer_6.png');
-        this.load.spritesheet('jeepSprite_easy', `img/player/jeep_spritesheet.png?${_autoVersionPhaser}`, { frameWidth: 256, frameHeight: 256 });
-        this.load.spritesheet('jeepSprite_normal', `img/player/jeep_spritesheet_normal.png?${_autoVersionPhaser}`, { frameWidth: 256, frameHeight: 256 });
-        this.load.spritesheet('jeepSprite_hard', `img/player/jeep_spritesheet_hard.png?${_autoVersionPhaser}`, { frameWidth: 256, frameHeight: 256 });
+        this.load.image('lupa', 'img/lupa.png');
 
-        // Animales y objetos
-        this.load
-          .image('lupa', 'img/lupa.png')
-          .image('recurso_aguila', 'img/niveles/safari/aguila.png')
-          .image('recurso_elefante', 'img/niveles/safari/elefante.png')
-          .image('recurso_hipopotamo', 'img/niveles/safari/hipopotamo.png')
-          .image('recurso_iguana', 'img/niveles/safari/iguana.png')
-          .image('recurso_jirafa', 'img/niveles/safari/jirafa.png')
-          .image('recurso_leon', 'img/niveles/safari/leon.png')
-          .image('recurso_oso', 'img/niveles/safari/oso.png')
-          .image('recurso_tigre', 'img/niveles/safari/tigre.png')
-          .image('recurso_urraca', 'img/niveles/safari/urraca.png')
-          .image('recurso_zebra', 'img/niveles/safari/zebra.png')
-        ;
-        
-        // stikers
-        this.load
-          .image('stiker_aguila', 'img/niveles/safari/stiker_aguila.png')
-          .image('stiker_elefante', 'img/niveles/safari/stiker_elefante.png')
-          .image('stiker_hipopotamo', 'img/niveles/safari/stiker_hipopotamo.png')
-          .image('stiker_iguana', 'img/niveles/safari/stiker_iguana.png')
-          .image('stiker_jirafa', 'img/niveles/safari/stiker_jirafa.png')
-          .image('stiker_leon', 'img/niveles/safari/stiker_leon.png')
-          .image('stiker_oso', 'img/niveles/safari/stiker_oso.png')
-          .image('stiker_tigre', 'img/niveles/safari/stiker_tigre.png')
-          .image('stiker_urraca', 'img/niveles/safari/stiker_urraca.png')
-          .image('stiker_zebra', 'img/niveles/safari/stiker_zebra.png')
-        ;
-        
         // Sonidos
         this.load
           .audio('soundTheme', 'sonidos/soundTheme.mp3')
           .audio('soundMotor', 'sonidos/motor_effect.mp3')
-
-          .audio('translate_aguila', 'sonidos/translate_aguila.mp3')
-          .audio('translate_elefante', 'sonidos/translate_elefante.mp3')
-          .audio('translate_hipopotamo', 'sonidos/translate_hipopotamo.mp3')
-          .audio('translate_iguana', 'sonidos/translate_iguana.mp3')
-          .audio('translate_jirafa', 'sonidos/translate_jirafa.mp3')
-          .audio('translate_leon', 'sonidos/translate_leon.mp3')
-          .audio('translate_oso', 'sonidos/translate_oso.mp3')
-          .audio('translate_tigre', 'sonidos/translate_tigre.mp3')
-          .audio('translate_urraca', 'sonidos/translate_urraca.mp3')
-          .audio('translate_zebra', 'sonidos/translate_zebra.mp3')
-          
-          .audio('animal_aguila', 'sonidos/aguila.mp3')
-          .audio('animal_elefante', 'sonidos/elefante.mp3')
-          .audio('animal_hipopotamo', 'sonidos/hipopotamo.mp3')
-          .audio('animal_iguana', 'sonidos/iguana.mp3')
-          .audio('animal_jirafa', 'sonidos/jirafa.mp3')
-          .audio('animal_leon', 'sonidos/leon.mp3')
-          .audio('animal_oso', 'sonidos/oso.mp3')
-          .audio('animal_tigre', 'sonidos/tigre.mp3')
-          .audio('animal_urraca', 'sonidos/urraca.mp3')
-          .audio('animal_zebra', 'sonidos/zebra.mp3')
 
           .audio('encuentra_letra', 'sonidos/encuentraLetra.mp3')
           .audio('bien_hecho', 'sonidos/bienHecho.mp3')
@@ -189,13 +272,82 @@ class Loading extends Phaser.Scene {
           .audio('letra_i', 'sonidos/letraE.mp3')
           .audio('letra_o', 'sonidos/letraO.mp3')
           .audio('letra_u', 'sonidos/letraU.mp3')
+          .audio('letra_b', 'sonidos/letraB.mp3')
+          .audio('letra_c', 'sonidos/letraC.mp3')
+          .audio('letra_g', 'sonidos/letraG.mp3')
           .audio('letra_h', 'sonidos/letraH.mp3')
           .audio('letra_j', 'sonidos/letraJ.mp3')
+          .audio('letra_m', 'sonidos/letraM.mp3')
           .audio('letra_l', 'sonidos/letraL.mp3')
+          .audio('letra_p', 'sonidos/letraP.mp3')
+          .audio('letra_r', 'sonidos/letraR.mp3')
+          .audio('letra_s', 'sonidos/letraS.mp3')
           .audio('letra_t', 'sonidos/letraT.mp3')
           .audio('letra_z', 'sonidos/letraZ.mp3')
-          
         ;
+
+        switch (level) {
+          case 'easy':
+            this.load.spritesheet('jeepSprite_easy', `img/player/jeep_spritesheet.png?${_autoVersionPhaser}`, { frameWidth: 256, frameHeight: 256 });
+
+            // audios
+            this.load              
+              .audio('animal_buho', 'sonidos/buho.mp3')
+              .audio('animal_cerdo', 'sonidos/cerdo.mp3')
+              .audio('animal_gato', 'sonidos/gato.mp3')
+              .audio('animal_hormiga', 'sonidos/hormiga.mp3')
+              .audio('animal_murcielago', 'sonidos/murcielago.mp3')
+              .audio('animal_rata', 'sonidos/rata.mp3')
+              .audio('animal_perro','sonidos/perro.mp3')
+              .audio('animal_zorro', 'sonidos/zorro.mp3')
+            ;
+            break;
+
+          case 'normal':
+            this.load.spritesheet('jeepSprite_normal', `img/player/jeep_spritesheet_normal.png?${_autoVersionPhaser}`, { frameWidth: 256, frameHeight: 256 });
+            
+            // Sonidos
+            this.load
+              .audio('animal_aguila', 'sonidos/aguila.mp3')
+              .audio('animal_caballo', 'sonidos/caballo.mp3')
+              .audio('animal_hipopotamo', 'sonidos/hipopotamo.mp3')
+              .audio('animal_iguana', 'sonidos/iguana.mp3')
+              .audio('animal_leon', 'sonidos/leon.mp3')
+              .audio('animal_mono', 'sonidos/mono.mp3')
+              .audio('animal_rana', 'sonidos/rana.mp3')
+              .audio('animal_oso', 'sonidos/oso.mp3')
+              .audio('animal_tigre', 'sonidos/tigre.mp3')
+              .audio('animal_zebra', 'sonidos/zebra.mp3')
+            ;
+            break;
+
+          case 'hard':
+            this.load.spritesheet('jeepSprite_hard', `img/player/jeep_spritesheet_hard.png?${_autoVersionPhaser}`, { frameWidth: 256, frameHeight: 256 });
+            
+            // Sonidos
+            this.load
+              .audio('animal_araña', 'sonidos/araña.mp3')
+              .audio('animal_ardilla', 'sonidos/ardilla.mp3')
+              .audio('animal_armadillo', 'sonidos/armadillo.mp3')
+              .audio('animal_caiman', 'sonidos/caiman.mp3')
+              .audio('animal_canguro', 'sonidos/canguro.mp3')
+              .audio('animal_colibri', 'sonidos/colibri.mp3')
+              .audio('animal_cucaracha', 'sonidos/cucaracha.mp3')
+              .audio('animal_elefante', 'sonidos/elefante.mp3')
+              .audio('animal_escorpion', 'sonidos/escorpion.mp3')
+              .audio('animal_jirafa', 'sonidos/jirafa.mp3')
+              .audio('animal_mariposa', 'sonidos/mariposa.mp3')
+              .audio('animal_mariquita', 'sonidos/mariquita.mp3')
+              .audio('animal_puercoespin', 'sonidos/puercoespin.mp3')
+              .audio('animal_saltamontes','sonidos/saltamontes.mp3')
+              .audio('animal_serpiente', 'sonidos/serpiente.mp3')
+              .audio('animal_urraca', 'sonidos/urraca.mp3')
+            ;
+            break;
+        
+          default:
+            break;
+        }        
       break;      
       
       default:
