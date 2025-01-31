@@ -32,14 +32,14 @@ const wordsAndTranslations = [
   { name: 'mariposa', translate: 'butterfly', fixEspanish: '' },
   { name: 'cucaracha', translate: 'cockroach', fixEspanish: '' },
   { name: 'canguro', translate: 'Kangaroo', fixEspanish: '' },
-  { name: 'puercoespin', translate: 'Porcupine', fixEspanish: 'puercoespín' },
+  { name: 'puercoespin', translate: 'porcupine', fixEspanish: 'puercoespín' },
   { name: 'serpiente', translate: 'snake', fixEspanish: '' },
   { name: 'escorpion', translate: 'scorpion', fixEspanish: 'escorpión' },
-  { name: 'ardilla', translate: 'Squirrel', fixEspanish: '' },
+  { name: 'ardilla', translate: 'squirrel', fixEspanish: '' },
   { name: 'araña', translate: 'spider', fixEspanish: '' },
   { name: 'mariquita', translate: 'ladybug', fixEspanish: '' },
-  { name: 'saltamontes', translate: 'Grasshopper', fixEspanish: '' },
-  { name: 'colibri', translate: 'Hummingbird', fixEspanish: 'colibrí' },
+  { name: 'saltamontes', translate: 'grasshopper', fixEspanish: '' },
+  { name: 'colibri', translate: 'hummingbird', fixEspanish: 'colibrí' },
   
 
 

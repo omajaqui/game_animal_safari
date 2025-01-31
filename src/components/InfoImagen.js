@@ -15,7 +15,7 @@ export default class InfoImagen {
   show(paramImage, origen='') {
     let nameImage = '';
     let word = '';
-    let translate = '';
+    this.translateText = '';
     let chunksWords = [];
     let keyAudiotranslate = '';
     let keyAudioAnimal = '';
@@ -25,8 +25,8 @@ export default class InfoImagen {
     keyAudiotranslate = paramImage.replace('stiker','translate');
     keyAudioAnimal = paramImage.replace('stiker','animal');
     chunksWords = paramImage.split('_');
-    word = validateFix(chunksWords[1]);
-    translate = getTranslate(chunksWords[1]);
+    this.word = validateFix(chunksWords[1]);
+    this.translateText = getTranslate(chunksWords[1]);
     
     // Crear el fondo oscuro con opacidad
     this.pauseOverlay = this.relatedScene.add.graphics();
@@ -55,12 +55,13 @@ export default class InfoImagen {
 
     //Textos con nombre de imagen y traduccion (no visible inicialmente)
     this.textWord = this.relatedScene.add.text(0, 0, 
-      word+' = '+translate,
+      this.word+' = '+this.translateText,
       { font: '60px Arial', fill: '#ffffff' }).setDepth(12)
       .setVisible(false).setOrigin(0.5).setPosition(this.cw/2, 40);
     ;
     
     if (origen == '') {
+      console.log(keyAudioAnimal);
       this.createLetterContainer(chunksWords[1]);
       this.audioEncuentraLetra = this.relatedScene.sound.add('encuentra_letra', { volume: 1, loop: false });
       this.audioAnimal = this.relatedScene.sound.add(keyAudioAnimal, { volume: 1, loop: false });
@@ -114,7 +115,8 @@ export default class InfoImagen {
 
     switch (audio) {
       case '':
-        this.audioTranslate.play();       
+        this.audioTranslate.play();
+        this.textWord.setText(this.word+' = '+this.translateText);       
         break;
       
       case 'animal':
@@ -156,7 +158,7 @@ export default class InfoImagen {
   createLetterContainer(word) {
     const letters = this.setLetters(word);
     const indication = this.relatedScene.add.text
-      (0, 0, 'Encuentra la letra con la que se escribe',
+      (0, 0, 'Señala la primera letra de la palabra',
         { font: '40px Arial', fill: '#ffffff' }
       ).setDepth(13).setOrigin(0.5).setPosition((this.cw/2 - 460), 20);
     ;
@@ -211,9 +213,11 @@ export default class InfoImagen {
         onComplete: () => letra.destroy(), // Eliminar el sprite después de la animación
       });
     } else {
+      const KeyOnlyAnimalTranslate = `translate_only_${word}`;
       const keyAudioLetra = `letra_${word.charAt(0)}`;
-      this.audioBienhecho = this.relatedScene.sound.add('bien_hecho', { volume: 1, loop: false });
-      this.audioLetra = this.relatedScene.sound.add(keyAudioLetra, { volume: 1, loop: false });
+      this.audioBienhecho = this.relatedScene.sound.add('bien_hecho', { volume: 0.7, loop: false });
+      this.audioLetra = this.relatedScene.sound.add(keyAudioLetra, { volume: 0.7, loop: false });
+      this.audioOnlytranslateAnimal = this.relatedScene.sound.add(KeyOnlyAnimalTranslate, { volume: 0.7, loop: false });
       this.containerLetters.setVisible(false);
       this.textWord.setVisible(true);      
       this.audioBienhecho.play();
@@ -227,6 +231,11 @@ export default class InfoImagen {
           this.audioTranslate.play();
           this.audioTranslate.once('complete', () =>{
             this.buttonContainer.setVisible(true);
+
+            setTimeout(() => {
+              this.audioOnlytranslateAnimal.play(); 
+              this.textWord.setText(this.translateText);
+            }, 1000);
           });
           
           // marcar el stiker en la coleccion como visible
